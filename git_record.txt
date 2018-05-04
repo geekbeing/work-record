@@ -1,0 +1,100 @@
+﻿
+说明：git本地端与服务器端常用命令与问题记录
+
+
+【本地端】
+1.环境配置：
+1)初始化一个空白文件夹：git init
+2)添加远程仓库：git remote add origin git@serverIP:home/xx.git
+
+2.新用户生成密钥对： sudo apt-get install openssh-client
+					  ssh-keygen
+
+3.修改远程仓库地址：先删除再添加
+git remote rm origin 
+git remote add origin git@serverIP:home/xx.git
+
+4.更新-合并： 
+git fetch origin 
+git merge origin/master
+
+5. 
+
+【服务器端】
+
+管理员才能创建仓库？
+
+1.服务器连接测试  ssh -T git@serverIP
+
+2. Connection timed out：检查ip ，公钥是否写入服务器的authorized_keys文件中
+
+3.查看用户：cat ~/.gitconfig
+
+4.重启sshd服务：/etc/rc.d/init.d/sshd restart
+
+5.用公钥初始化gitosisi：sudo -H -u git gitosis-init < /root/.ssh/id_rsa
+
+6.添加git服务器新用户：
+1）新用户生成密钥对： sudo apt-get install openssh-client
+					  ssh-keygen
+2）公钥发给管理者
+3）管理员把公钥放到 gitosis-admin/keydir下
+4）管理员在gitosis.conf中修改用户权限，再推送到服务器即可；
+
+7.新建裸仓库 ：git init --bare project.git
+
+8.删除文件：git rm file-name
+			git rm -r fold-name/   //-r 表示递归所有子目录
+
+9.添加新项目：shell 登入主机并创建一个裸仓库目录			
+			
+			
+			
+【问题记录】
+1.
+问题：remote: error: insufficient permission for adding an object to repository database ./objects		
+仓库本身没有写权限
+
+解决办法：chown -R git:git  pushtest.git
+
+2.
+问题：gitosis权限设置不生效
+解决办法：用管理员的公钥来初始化gitosis
+
+3.
+问题：服务器仓库看不到文件
+分析：在服务器创建的裸仓库（--bare）是不存储文件，只存储历史和元信息
+
+4.
+问题：Putty连接老是掉线
+原因：不发送信息，sshl连接很快会断开
+解决办法：客户端 >> Connection >> Seconds between keepalives （填60+）；勾选 Enable TCP keepalives
+
+
+我的IP：47.94.254.148
+禁止访问：/home/git/repositories/gitosis-admin.git
+可写仓库：/home/git/repositories/mytestproject.git
+只读仓库：/home/git/repositories/pushtest.git
+
+在不同文件夹克隆仓库
+git初始化，添加远程仓库
+1)初始化一个空白文件夹：git init
+2)添加远程仓库：git remote add origin git@serverIP:home/xx.git
+
+
+禁止访问：看能否克隆，不能就对了
+git clone git@47.94.254.148:gitosis-admin.git
+
+
+读写：克隆，添加，提交。推送
+git clone git@47.94.254.148:mytestproject.git
+git add .
+git commit -am "write s file for test"
+git push origin master
+
+只读：克隆，添加，提交，无法推送就对了
+git clone git@47.94.254.148:pushtest.git
+git add .
+git commit -am "write s file for test"
+git push origin master
+
