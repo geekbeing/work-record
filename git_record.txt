@@ -1,4 +1,11 @@
 ﻿
+git服务器搭建
+参考博客：
+https://www.linuxidc.com/Linux/2015-07/120616.htm
+https://blog.csdn.net/u014086788/article/details/50819258
+http://www.cnblogs.com/charliePU/p/7528226.html
+
+
 说明：git本地端与服务器端常用命令与问题记录
 
 
@@ -58,7 +65,7 @@ git merge origin/master
 解决办法：chown -R git:git  pushtest.git
 
 2.
-问题：gitosis权限设置不生效
+问题：gitosis权限设置可以push但不生效
 解决办法：用管理员的公钥来初始化gitosis
 
 3.
