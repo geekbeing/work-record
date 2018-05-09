@@ -21,15 +21,19 @@ http://www.cnblogs.com/charliePU/p/7528226.html
 git remote rm origin 
 git remote add origin git@serverIP:home/xx.git
 
+git remote set-url origin  [url]
+
 4.更新-合并： 
 git fetch origin 
 git merge origin/master
 
-5. 
+5. 新建项目仓库：
+5.1 在本地建好仓库，
+5.2 管理员修改访问权限，
+5.3 推送到服务器
 
 【服务器端】
 
-管理员才能创建仓库？
 
 1.服务器连接测试  ssh -T git@serverIP
 
@@ -37,7 +41,7 @@ git merge origin/master
 
 3.查看用户：cat ~/.gitconfig
 
-4.重启sshd服务：/etc/rc.d/init.d/sshd restart
+4.重启sshd服务：sudo /etc/init.d/sshd restart
 
 5.用公钥初始化gitosisi：sudo -H -u git gitosis-init < /root/.ssh/id_rsa
 
@@ -77,6 +81,18 @@ git merge origin/master
 原因：不发送信息，sshl连接很快会断开
 解决办法：客户端 >> Connection >> Seconds between keepalives （填60+）；勾选 Enable TCP keepalives
 
+5.
+问题：
+remote: error: insufficient permission for adding an object to repository databa                         se ./objects
+remote: fatal: failed to write object
+error: remote unpack failed: unpack-objects abnormal exit
+To 39.105.65.143:Writable-test.git
+ ! [remote rejected] master -> master (unpacker error)
+error: failed to push some refs to 'git@39.105.65.143:Writable-test.git'
+原因：未知
+解决方法：将本地仓库推送到服务器来新建项目仓库不会有此问题
+
+
 
 我的IP：47.94.254.148
 禁止访问：/home/git/repositories/gitosis-admin.git
@@ -94,13 +110,13 @@ git clone git@47.94.254.148:gitosis-admin.git
 
 
 读写：克隆，添加，提交。推送
-git clone git@47.94.254.148:mytestproject.git
+git clone git@39.105.65.143:Writable.git
 git add .
 git commit -am "write s file for test"
 git push origin master
 
 只读：克隆，添加，提交，无法推送就对了
-git clone git@47.94.254.148:pushtest.git
+git clone git@39.105.65.143:Readonly.git
 git add .
 git commit -am "write s file for test"
 git push origin master
