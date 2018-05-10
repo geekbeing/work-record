@@ -1,9 +1,7 @@
 ﻿
 git服务器搭建
-参考博客：
-https://www.linuxidc.com/Linux/2015-07/120616.htm
-https://blog.csdn.net/u014086788/article/details/50819258
-http://www.cnblogs.com/charliePU/p/7528226.html
+博客：
+
 
 
 说明：git本地端与服务器端常用命令与问题记录
@@ -20,7 +18,7 @@ http://www.cnblogs.com/charliePU/p/7528226.html
 3.修改远程仓库地址：先删除再添加
 git remote rm origin 
 git remote add origin git@serverIP:home/xx.git
-
+或者
 git remote set-url origin  [url]
 
 4.更新-合并： 
@@ -83,7 +81,7 @@ git merge origin/master
 
 5.
 问题：
-remote: error: insufficient permission for adding an object to repository databa                         se ./objects
+remote: error: insufficient permission for adding an object to repository database ./objects
 remote: fatal: failed to write object
 error: remote unpack failed: unpack-objects abnormal exit
 To 39.105.65.143:Writable-test.git
@@ -91,7 +89,8 @@ To 39.105.65.143:Writable-test.git
 error: failed to push some refs to 'git@39.105.65.143:Writable-test.git'
 原因：未知
 解决方法：将本地仓库推送到服务器来新建项目仓库不会有此问题
-
+网上方案：http://www.cnblogs.com/charliePU/p/7528226.html  最底部
+查看原mytestproject.git目录权限，发现mytestproject.git/object/没有group写权限导致；执行 $ sudo chmod g+w -R mytestproject.git/object 后OK
 
 
 我的IP：47.94.254.148
@@ -106,18 +105,18 @@ git初始化，添加远程仓库
 
 
 禁止访问：看能否克隆，不能就对了
-git clone git@47.94.254.148:gitosis-admin.git
-
+git clone git@39.105.65.143:gitosis-admin.git
+git clone git@39.105.65.143:mytest.git
 
 读写：克隆，添加，提交。推送
-git clone git@39.105.65.143:Writable.git
+git clone git@39.105.65.143:Writetest.git
 git add .
-git commit -am "write s file for test"
+git commit -m "write a file for writable test"
 git push origin master
 
 只读：克隆，添加，提交，无法推送就对了
-git clone git@39.105.65.143:Readonly.git
+git clone git@39.105.65.143:Readtest.git
 git add .
-git commit -am "write s file for test"
+git commit -m "write a file for readonly test"
 git push origin master
 
